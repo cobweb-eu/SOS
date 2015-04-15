@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="json-20141113.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="postgis-jdbc-2.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="postgresql-9.3-1102.jdbc41.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

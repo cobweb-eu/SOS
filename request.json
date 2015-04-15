@@ -1,0 +1,16 @@
+{
+  "request": "GetObservation",
+  "service": "SOS",
+  "version": "2.0.0",
+  "procedure": "http://smartcoasts.ucd.ie/procedure/0",
+  "offering": "http://smartcoasts.ucd.ie/offering/0",
+  "temporalFilter": {
+    "during": {
+      "ref": "om:phenomenonTime",
+      "value": [
+        "2015-02-13T23:10:00+01:00",
+        "2015-02-13T23:15:00+01:00"     
+      ]
+    }
+  }
+}
