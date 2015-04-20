@@ -6,6 +6,8 @@ import ie.ucd.sixth.core.cyber.utils.geocode.Geocoder;
 import ie.ucd.sixth.core.sensor.data.ISensorData;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -56,8 +58,8 @@ public class App_Flooding extends AbstractApplication {
 
 	private final String DB = "jdbc:postgresql://localhost:5432/jakarta";
 	private final String DRIVER = "org.postgresql.Driver";
-	private final String USER = "conor";
-	private final String PASS = "c0bw3b";
+	private final String FNAME = "key.properties";
+	String apikey;
 
 	BundleContext c;
 	private static Logger logger = Logger.getLogger(AbstractAdaptorStream.class
@@ -70,6 +72,14 @@ public class App_Flooding extends AbstractApplication {
 	public App_Flooding(BundleContext context) {
 		super(context);
 		c = context;
+		try {
+			File f = new File(FNAME);
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			apikey = br.readLine();
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -113,8 +123,9 @@ public class App_Flooding extends AbstractApplication {
 		}
 
 		System.out.println("Have tweet data");
-		if(lat==null)System.out.println("Not inserting\n");
-		else{
+		if (lat == null)
+			System.out.println("Not inserting\n");
+		else {
 			// System.out.println("Tweet text: "+map.get(TTEXT));
 			// System.out.println("Location: "+lon+" "+lat);
 
@@ -128,8 +139,7 @@ public class App_Flooding extends AbstractApplication {
 
 				URL url = new URL(
 						"https://api.idolondemand.com/1/api/sync/analyzesentiment/v1?text="
-								+ URLEncoder.encode(tweet, UTF8)
-								+ "&apikey=2ec20ae0-802b-49cc-920d-aa0b0ab0b608");
+								+ URLEncoder.encode(tweet, UTF8) + "&" + apikey);
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						url.openStream()));
 				String line = null;
@@ -141,9 +151,9 @@ public class App_Flooding extends AbstractApplication {
 				JSONObject jO = new JSONObject(sb.toString());
 				JSONObject agg = jO.getJSONObject("aggregate");
 				Double d = agg.getDouble("score");
-				
+
 				URL u = c.getBundle().getResource(Constant.FN);
-				
+
 				Utility.post(lon, lat,
 						"Sentiment: " + d + " User ID: " + map.get(TID)
 								+ " Tweet: " + tweet, u.openStream());
@@ -185,9 +195,9 @@ public class App_Flooding extends AbstractApplication {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
-		//System.out.println();
+		// System.out.println();
 
 	}
 }
